@@ -130,19 +130,16 @@ module.exports = {
   handlerChangeImageUser: async (req, res, next) => {
     try {
       const id = req.user.id;
-      if (!req.file) {
+      if (!req.publicUrl) {
         throw new Error("Image is required");
       }
-      const image = req.file;
-
+      console.log("result publicUrl:" + req.publicUrl);
+      const publicUrl = req.publicUrl;
       const getUser = await User.findByPk(id);
 
-      // if (getUser.img) {
-      //   fs.unlinkSync(getUser.img)
-      // }
-      console.log("/images/" + req.file.filename);
+      console.log(publicUrl);
 
-      getUser.update({ img: "/images/" + req.file.filename });
+      getUser.update({ img: publicUrl});
 
       res.status(201).json({
         status: "success",
